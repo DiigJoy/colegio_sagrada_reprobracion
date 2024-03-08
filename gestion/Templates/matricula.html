@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Colegio Sagrada Reprobación - Matricula</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    
+    <script>
+        const botonCerrarSesion = () => {
+            if(window.confirm("Esta Seguro De Querer Cerrar La sesion?")){
+                window.location.href = "/logout";
+            }
+        }
+    </script>
+    
+    <script>
+        const botonEliminarMatricula = (id) => {
+            if(window.confirm("Esta Seguro De Querer Eliminar La Matricula?")){
+                window.location.href = "/eliminar_matricula/" + id;
+            }
+        }
+    </script>
+</head>
+
+<body class="my-login-page">
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-md-center h-100">
+                <div class="card-wrapper">
+                    <div class="divtitle">
+                        <h1 class="title">Colegio Sagrada Reprobación</h1>
+                    </div>
+                    <div class="navbar-brand text-center text-black-50">
+                        Usuario Logeado: {{ nomUsuario }}
+                    </div>
+
+                    {% if r2 %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <h5>{{r2}} </h5>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                    {% if r %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h5>{{r}} </h5>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                    <div class="divmenu">
+                        <h2 class="menu">Matricula</h2>
+                    </div>
+
+                    <div class="lista-matricula">
+                        <form method="post" action="/registrar_matricula/">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="apoderado_rut">Rut Apoderado:</label>
+                                <input type="text" name="apoderado_rut" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_nombres">Nombres Apoderado:</label>
+                                <input type="text" name="apoderado_nombres" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_paterno">Apellido Paterno Apoderado:</label>
+                                <input type="text" name="apoderado_paterno" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_materno">Apellido Materno Apoderado:</label>
+                                <input type="text" name="apoderado_materno" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_edad">Edad Apoderado:</label>
+                                <input type="number" name="apoderado_edad" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_parentesco">Parentesco Apoderado:</label>
+                                <input type="text" name="apoderado_parentesco" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apoderado_nacionalidades">Nacionalidad Apoderado:</label>
+                                <select name="apoderado_nacionalidades" class="form-select" aria-label="Default select example" required>
+                                    <option value="" selected>Seleccionar Nacionalidad</option>
+
+                                    {% for x in opnac %}
+                                        <option value="{{ x.id }}" >{{ x.nombre_nacionalidad }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="estudiante_rut">Rut Estudiante:</label>
+                                <input type="text" name="estudiante_rut" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estudiante_nombres">Nombres Estudiante:</label>
+                                <input type="text" name="estudiante_nombres" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estudiante_paterno">Apellido Paterno Estudiante:</label>
+                                <input type="text" name="estudiante_paterno" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estudiante_materno">Apellido Materno Estudiante:</label>
+                                <input type="text" name="estudiante_materno" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estudiante_edad">Edad Estudiante:</label>
+                                <input type="number" name="estudiante_edad" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estudiante_nacionalidades">Nacionalidad Estudiante:</label>
+                                <select name="estudiante_nacionalidades" class="form-select" aria-label="Default select example" required>
+                                    <option value="" selected>Seleccionar Nacionalidad</option>
+
+                                    {% for x in opnac %}
+                                        <option value="{{ x.id }}" >{{ x.nombre_nacionalidad }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="curso">Curso:</label>
+                                <select name="curso" class="form-select" required>
+                                    <option value="" selected disabled>Seleccionar Curso</option>
+                                    {% for x in opcur %}
+                                        <option value="{{ x.id }}">{{ x.nombre_curso }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+
+                            <div class="text-center mb-4">
+                                <button class="btn btn-primary mt-2" id="registrar-matricula">Registrar Matricula</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+
+
+
+
+					<h3 class="menu">Filtros</h3>
+
+					<br>
+
+					<div>
+						<form action="/filtroEmpiezaMatricula/" method="post" class="row">
+							{% csrf_token %}
+							<div class="col-10">
+								<input type="text" name="txtfil" placeholder="Nombre de Estudiante que empieza en:" required class="form-control form-control-lg" />
+							</div>
+							<div class="col-2">
+								<input type="submit" value="Filtrar" class="btn btn-primary btn-lg" style="width:100%"/>
+							</div>
+						</form>
+						<br>
+						<form action="/filtroContengaMatricula/" method="post" class="row">
+							{% csrf_token %}
+							<div class="col-10">
+								<input type="text" name="txtfil" placeholder="Nombre de Estudiante que contenga:" required class="form-control form-control-lg" />
+							</div>
+							<div class="col-2">
+								<input type="submit" value="Filtrar" class="btn btn-primary btn-lg" style="width:100%"/>
+							</div>
+						</form>
+						<br>
+						<form action="/filtroTerminaMatricula/" method="post" class="row">
+							{% csrf_token %}
+							<div class="col-10">
+								<input type="text" name="txtfil" placeholder="Nombre de Estudiante que termina en:" required class="form-control form-control-lg" />
+							</div>
+							<div class="col-2">
+								<input type="submit" value="Filtrar" class="btn btn-primary btn-lg" style="width:100%"/>
+							</div>
+						</form>
+						<br>
+						<form action="/filtroOrdenMatricula/" method="post" class="row">
+							{% csrf_token %}
+							<div class="col-10">
+								<select name="cboopt" required class="form-select form-select-lg">
+									<option value="">Seleccione Opcion ascendente/descendente</option>
+									<option value="ascendente">Ascendente según ID</option>
+									<option value="descendente">Descendente según ID</option>
+								</select>
+							</div>
+							<div class="col-2">
+								<input type="submit" value="Ordenar Listado" class="btn btn-primary btn-lg" style="width:100%"/>
+							</div>
+						</form>
+					</div>
+
+					<br>
+					
+                    {% if est %}
+						<div class="lista-matricula text-center">
+							<h3>Listado de Matriculas</h3>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Apoderado Rut</th>
+											<th>Apoderado Nombres</th>
+											<th>Apoderado Paterno</th>
+											<th>Apoderado Materno</th>
+											<th>Apoderado Edad</th>
+											<th>Apoderado Parentesco</th>
+                                            <th>Apoderado Nacionalidad</th>
+											<th>Estudiante Rut</th>
+											<th>Estudiante Nombres</th>
+											<th>Estudiante Paterno</th>
+											<th>Estudiante Materno</th>
+											<th>Estudiante Edad</th>
+                                            <th>Estudiante Nacionalidad</th>
+											<th>Curso</th>
+											<th>Editar</th>
+											<th>Eliminar</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for matricula in est%}
+											<tr>
+												<td>{{ matricula.apoderado_rut }}</td>
+												<td>{{ matricula.apoderado_nombres }}</td>
+												<td>{{ matricula.apoderado_paterno }}</td>
+												<td>{{ matricula.apoderado_materno }}</td>
+												<td>{{ matricula.apoderado_edad }}</td>
+												<td>{{ matricula.apoderado_parentesco }}</td>
+                                                <td>{{ matricula.apoderado_nacionalidad.nombre_nacionalidad }}</td>
+												<td>{{ matricula.estudiante_rut }}</td>
+												<td>{{ matricula.estudiante_nombres }}</td>
+												<td>{{ matricula.estudiante_paterno }}</td>
+												<td>{{ matricula.estudiante_materno }}</td>
+												<td>{{ matricula.estudiante_edad }}</td>
+                                                <td>{{ matricula.estudiante_nacionalidad.nombre_nacionalidad }}</td>
+												<td>{{ matricula.curso.nombre_curso }}</td>
+								
+												<td>
+													<a href="/form_actualizar_matricula/{{ matricula.id }}" class="btn btn-lg">
+														<i class="bi bi-pencil-fill"></i>
+													</a>
+												</td>
+												<td>
+													<button type="button" onClick="botonEliminarMatricula({{ matricula.id }})" class="btn btn-lg">
+														<i class="bi bi-trash-fill"></i>
+													</button>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+															
+							</div>
+						</div>
+					
+                    {% else %}
+                        <h5 class="text-center text-danger" style="padding-top: 10px; padding-bottom: 10px;">
+                            No Hay Matriculas Para Listar!!
+                        </h5>
+                    {% endif %}
+                    
+                    <div class="text-center2">
+                        <a class="btn btn-danger" href="/menuadmin">Volver</a>
+                    </div>
+
+                    <div class="footer">
+                        Copyright &copy; 2023 &mdash; Colegio Sagrada Reprobación
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

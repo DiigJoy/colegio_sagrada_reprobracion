@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Colegio Sagrada Reprobación - Cursos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    
+    <script>
+        const botonCerrarSesion = () => {
+            if(window.confirm("Esta Seguro De Querer Cerrar La sesion?")){
+                window.location.href = "/logout";
+            }
+        }
+    </script>
+    
+    <script>
+        const botonEliminarCurso = (id) => {
+            if(window.confirm("Esta Seguro De Querer Eliminar El Curso?")){
+                window.location.href = "/eliminar_curso/" + id;
+            }
+        }
+    </script>
+</head>
+
+<body class="my-login-page">
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-md-center h-100">
+                <div class="card-wrapper">
+                    <div class="divtitle">
+                        <h1 class="title">Colegio Sagrada Reprobación</h1>
+                    </div>
+                    <div class="navbar-brand text-center text-black-50">
+                        Usuario Logeado: {{ nomUsuario }}
+                    </div>
+
+                    {% if r2 %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h5>{{r2}} </h5>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    {% if r %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h5>{{r}} </h5>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <div class="divmenu">
+                        <h2 class="menu">Cursos</h2>
+                    </div>
+                    <div class="lista-cursos">
+                        <form method="post" action="/registrar_cursos/">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="nombre_curso">Nombre:</label>
+                                <input type="text" name="nombre_curso" class="form-control" required>
+                            </div>
+
+                            <div class="text-center mb-4">
+                                <button class="btn btn-primary mt-2" id="crear-cursos">Crear Curso</button>
+                            </div>
+                        </form>                        
+                    </div>
+
+                    <br>
+
+                    {% if cursos %}
+                        <div class="lista-cursos text-center">
+                            <h3>Listado de Cursos</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Editar</th>                                           
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for curso in cursos %}
+                                            <tr>
+                                                <td>{{ curso.id }}</td>
+                                                <td>{{ curso.nombre_curso }}</td>
+                                                <td>
+													<a href="/form_actualizar_curso/{{ curso.id }}" class="btn btn-lg">
+														<i class="bi bi-pencil-fill"></i>
+													</a>
+												</td>                                                
+                                                <td>
+                                                    <button type="button" onClick="botonEliminarCurso({{ curso.id }})" class="btn btn-lg">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% else %}
+                        <h5 class="text-center text-danger" style="padding-top: 10px; padding-bottom: 10px;">
+                            No hay cursos para listar.
+                        </h5>
+                    {% endif %}
+
+
+                    
+                    <div class="text-center2">
+                        <a class="btn btn-danger" href="/menuadmin">Volver</a>
+                    </div>
+                    <div class="footer">
+                        Copyright &copy; 2023 &mdash; Colegio Sagrada Reprobación
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="js/my-login.js"></script>
+</body>
+</html>

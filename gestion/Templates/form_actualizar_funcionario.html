@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Colegio Sagrada Reprobación - Actualizar Funcionario</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body class="my-login-page">
+    <section class="h-100">
+        <div class="container h-100">
+            <div class="row justify-content-md-center h-100">
+                <div class="card-wrapper">
+                    <div class="divtitle">
+                        <h1 class="title">Colegio Sagrada Reprobación</h1>
+                    </div>
+
+                    <div class="navbar-brand text-center text-black-50">
+                        Usuario Logeado: {{ nomUsuario }}
+                    </div>
+
+					{% if r2 %}
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<h5>{{r2}} </h5>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					{% endif %}
+					{% if r %}
+						<div class="alert alert-success alert-dismissible fade show" role="alert">
+							<h5>{{r}} </h5>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					{% endif %}
+                    <div class="divmenu">
+                        <h2 class="menu">Actualizar Funcionario</h2>
+                    </div>
+                    
+                    <div class="lista-funcionarios">
+                        <form action="/actualizar_funcionario/{{encontrado.id}}" method="POST" >
+                            {% csrf_token %}
+							<div class="form-group">
+								<label for="rut">Rut:</label>
+								<input value="{{encontrado.rut}}" type="text" name="rut" class="form-control"  required>
+							</div>
+						
+							<div class="form-group">
+								<label for="nombre">Nombre:</label>
+								<input value="{{encontrado.nombres}}" type="text" name="nombre" class="form-control" required>
+							</div>
+						
+							<div class="form-group">
+								<label for="paterno">Apellido Paterno:</label>
+								<input value="{{encontrado.paterno}}" type="text" name="paterno" class="form-control"  required>
+							</div>
+
+							<div class="form-group">
+								<label for="materno">Apellido Materno:</label>
+								<input value="{{encontrado.materno}}" type="text" name="materno" class="form-control" required>
+							</div>
+
+							<div class="form-group">
+								<label for="correo">Correo:</label>
+								<input value="{{encontrado.correo}}" type="email" name="correo" class="form-control" required>
+							</div>
+
+                            <div class="form-group">
+                                <label for="cargo">Cargo:</label>
+                                <select name="cargo" class="form-select" aria-label="Default select example" required>
+                                    {% for cargo_option in opcarg %}
+                                        {% if encontrado.cargo_id == cargo_option.id %}
+                                            <option value="{{ cargo_option.id }}" selected>{{ cargo_option.nombre_cargo }}</option>
+                                        {% else %}
+                                            <option value="{{ cargo_option.id }}">{{ cargo_option.nombre_cargo }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="curso">Curso:</label>
+                                <select name="curso" class="form-select" required>
+                                    <option value="" >Seleccionar Curso</option>
+                                    {% for x in opcurs %}
+                                        {% if encontrado.curso_id == x.id %}
+                                            <option value="{{ x.id }}"selected >{{ x.nombre_curso }}</option>
+                                        {% else %}
+                                            <option value="{{ x.id }}">{{ x.nombre_curso }}</option>
+                                        {% endif %}                                    
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="jefatura">Jefatura:</label>
+                                <select name="jefatura" class="form-select" aria-label="Default select example">
+                                    <option value="">No Aplica</option>
+                                    {% for jefatura_option in opcurs %}
+                                        {% if encontrado.jefatura_id == jefatura_option.id %}
+                                            <option value="{{ jefatura_option.id }}" selected>{{ jefatura_option.nombre_curso }}</option>
+                                        {% else %}
+                                            <option value="{{ jefatura_option.id }}">{{ jefatura_option.nombre_curso }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="asignatura">Asignatura:</label>
+                                <select name="asignatura" class="form-select" aria-label="Default select example" required>
+                                    {% for asignatura_option in opasig %}
+                                        {% if encontrado.asignatura_id == asignatura_option.id %}
+                                            <option value="{{ asignatura_option.id }} "selected>{{ asignatura_option.nombre_asignatura }}</option>
+                                        {% else %}
+                                            <option value="{{ asignatura_option.id  }}">{{ asignatura_option.nombre_asignatura }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+
+                            <div class="text-center mb-4">
+                                <input type="submit" class="btn btn-primary btn-lg" style="width:95%;" value="Actualizar"/>
+                            </div>
+
+                        </form>
+                    </div>
+
+
+
+                    
+                    <div class="text-center2">
+                        <a class="btn btn-danger" href="/funcionarios">Volver</a>
+                    </div>
+
+                    <div class="footer">
+                        Copyright &copy; 2023 &mdash; Colegio Sagrada Reprobación
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
